@@ -6,7 +6,10 @@ const solution = require(path.join('..', 'src', testfilename))
 
 describe(`Day ${testfilename}`, () => {
     /*
-    To make sure you didn't miss any, you scan the likely candidate boxes again, counting the number that have an ID containing exactly two of any letter and then separately counting those with exactly three of any letter. You can multiply those two counts together to get a rudimentary checksum and compare it to what your device predicts.
+    To make sure you didn't miss any, you scan the likely candidate boxes again,
+    counting the number that have an ID containing exactly two of any letter and
+    then separately counting those with exactly three of any letter.
+    You can multiply those two counts together to get a rudimentary checksum and compare it to what your device predicts.
 
     For example, if you see the following box IDs:
 
@@ -17,7 +20,10 @@ describe(`Day ${testfilename}`, () => {
     aabcdd contains two a and two d, but it only counts once.
     abcdee contains two e.
     ababab contains three a and three b, but it only counts once.
-    Of these box IDs, four of them contain a letter which appears exactly twice, and three of them contain a letter which appears exactly three times. Multiplying these together produces a checksum of 4 * 3 = 12.
+
+    Of these box IDs, four of them contain a letter which appears exactly twice,
+    and three of them contain a letter which appears exactly three times.
+    Multiplying these together produces a checksum of 4 * 3 = 12.
      */
 
     describe('checksum', () => {
@@ -43,11 +49,40 @@ describe(`Day ${testfilename}`, () => {
     })
 
     /*
+    The boxes will have IDs which differ by exactly one character at the same position in both strings. For example, given the following box IDs:
+
+    abcde
+    fghij
+    klmno
+    pqrst
+    fguij
+    axcye
+    wvxyz
+
+    The IDs abcde and axcye are close, but they differ by two characters (the second and fourth).
+    However, the IDs fghij and fguij differ by exactly one character, the third (h and u). Those must be the correct boxes.
      */
 
-    // describe('reverse captcha 2', () => {
-    //     it('matches the first example', () => {
-    //         expect(solution.sumToRepeat([1, -2, 3, 1])).to.be.equal(2)
-    //     })
-    // })
+    describe('compareIds', () => {
+        it('compares abcde and axcye as expected', () => {
+            expect(solution.compareIds('abcde', 'axcye')).to.be.equal(2)
+        })
+        it('compares fghij and fguij as expected', () => {
+            expect(solution.compareIds('fghij', 'fguij')).to.be.equal(1)
+        })
+    })
+    describe('findPair', () => {
+        const ids = [
+            'abcde',
+            'fghij',
+            'klmno',
+            'pqrst',
+            'fguij',
+            'axcye',
+            'wvxyz',
+        ]
+        it('matches the first example', () => {
+            expect(solution.findPair(ids)).to.be.deep.equal(['fghij', 'fguij'])
+        })
+    })
 })
